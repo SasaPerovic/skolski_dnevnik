@@ -1,24 +1,25 @@
 package rs.iktpreobuka.project.skolski_dnevnik.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import rs.iktpreobuka.project.skolski_dnevnik.entities.enums.Role;
 
 @Entity
 @Table(name="Parson")
@@ -26,7 +27,7 @@ import rs.iktpreobuka.project.skolski_dnevnik.entities.enums.Role;
 public class ParsonEntity {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	@Version
 	private Integer version;
@@ -40,13 +41,76 @@ public class ParsonEntity {
 	private LocalDate dayOfBrth;
 	@Column(name="Phone_Number")
 	private String phoneNumber;
-	@Column(name="Role")
-	private Role role;
+
+
+	@OneToMany(mappedBy = "parson", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	private List<AdminEntity> admins = new ArrayList<>();
+
+	@OneToMany(mappedBy = "parson", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	private List<StudentEntity> students = new ArrayList<>();
+
+	@OneToMany(mappedBy = "parson", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	private List<TeacherEntity> teachers = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "parson", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	private List <ParentEntity> parents = new ArrayList<>();
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "role")
+	private RoleEntety role;
+	
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "user")
+	private UserEntity user;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "address")
 	private AddressEntity address;
 	
+	
+	public List<AdminEntity> getAdmins() {
+		return admins;
+	}
+	public void setAdmins(List<AdminEntity> admins) {
+		this.admins = admins;
+	}
+	public List<StudentEntity> getStudents() {
+		return students;
+	}
+	public void setStudents(List<StudentEntity> students) {
+		this.students = students;
+	}
+	public List<TeacherEntity> getTeachers() {
+		return teachers;
+	}
+	public void setTeachers(List<TeacherEntity> teachers) {
+		this.teachers = teachers;
+	}
+	public List<ParentEntity> getParents() {
+		return parents;
+	}
+	public void setParents(List<ParentEntity> parents) {
+		this.parents = parents;
+	}
+	public RoleEntety getRole() {
+		return role;
+	}
+	public void setRole(RoleEntety role) {
+		this.role = role;
+	}
+	public UserEntity getUser() {
+		return user;
+	}
+	public void setUser(UserEntity user) {
+		this.user = user;
+	}
+	public AddressEntity getAddress() {
+		return address;
+	}
+	public void setAddress(AddressEntity address) {
+		this.address = address;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -95,24 +159,7 @@ public class ParsonEntity {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	public Role getRole() {
-		return role;
-	}
-	public void setRole(Role role) {
-		this.role = role;
-	}
-	public ParsonEntity(Integer id, Integer version, String name, String lastname, String email, LocalDate dayOfBrth,
-			String phoneNumber, Role role) {
-		super();
-		this.id = id;
-		this.version = version;
-		this.name = name;
-		this.lastname = lastname;
-		this.email = email;
-		this.dayOfBrth = dayOfBrth;
-		this.phoneNumber = phoneNumber;
-		this.role = role;
-	}
+	
 	public ParsonEntity() {
 		super();
 		// TODO Auto-generated constructor stub

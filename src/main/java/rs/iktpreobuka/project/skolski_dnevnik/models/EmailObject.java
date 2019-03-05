@@ -5,6 +5,7 @@ public class EmailObject {
 	private String to;
 	private String subject;
 	private String text;
+	
 	public String getTo() {
 		return to;
 	}

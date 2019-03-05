@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -28,6 +27,7 @@ public class AddressEntity {
 	private String city;
 	@Column(name= "Country")
 	private String country;
+	
 	
 	@OneToMany(mappedBy = "address", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<ParsonEntity> person= new ArrayList<>();
@@ -62,18 +62,18 @@ public class AddressEntity {
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	public AddressEntity(Integer id, Integer version, String street, String city, String country) {
-		super();
-		this.id = id;
-		this.version = version;
-		this.street = street;
-		this.city = city;
-		this.country = country;
+	
+	public List<ParsonEntity> getPerson() {
+		return person;
+	}
+	public void setPerson(List<ParsonEntity> person) {
+		this.person = person;
 	}
 	public AddressEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 	
 	
 	

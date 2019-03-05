@@ -11,7 +11,7 @@ import rs.iktpreobuka.project.skolski_dnevnik.services.EmailService;
 
 
 @RestController
-@RequestMapping(path = "/")
+@RequestMapping(path = "/api/v1/email")
 public class EmailController {
 	@Autowired
 	private EmailService emailService;
@@ -27,4 +27,13 @@ public class EmailController {
 			return "Your mail has been sent!";
 		}
 
+	@RequestMapping(method = RequestMethod.POST, value = "/templateEmail")
+	public String sendTemplateMessage(@RequestBody EmailObject object) throws Exception {
+
+		if (object == null || object.getTo() == null || object.getText() == null) {
+			return null;
+		}
+		emailService.sendTemplateMessage(object);
+		return "Your mail has been sent!";
+	}
 }

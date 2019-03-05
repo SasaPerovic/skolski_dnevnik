@@ -1,12 +1,22 @@
 package rs.iktpreobuka.project.skolski_dnevnik.entitiesDTO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
+import rs.iktpreobuka.project.skolski_dnevnik.entities.AdminEntity;
+import rs.iktpreobuka.project.skolski_dnevnik.entities.ParentEntity;
+import rs.iktpreobuka.project.skolski_dnevnik.entities.ParsonEntity;
+import rs.iktpreobuka.project.skolski_dnevnik.entities.StudentEntity;
+import rs.iktpreobuka.project.skolski_dnevnik.entities.TeacherEntity;
+import rs.iktpreobuka.project.skolski_dnevnik.entities.UserEntity;
 import rs.iktpreobuka.project.skolski_dnevnik.utils.Views;
 
 public class UserEntityDTO {
@@ -23,6 +33,16 @@ public class UserEntityDTO {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	@JsonBackReference
+	private List<AdminEntity>  admin = new ArrayList<>();
+	@JsonBackReference
+	private List<ParsonEntity> parson = new ArrayList<>();
+	@JsonBackReference
+	private List<StudentEntity> students = new ArrayList<>();
+	@JsonBackReference
+	private List<ParentEntity> parents = new ArrayList<>();
+	@JsonBackReference
+	private List<TeacherEntity> teachers = new ArrayList<>();
 	
 	@JsonView(Views.Student.class)
 	@JsonProperty("name")
@@ -55,7 +75,10 @@ public class UserEntityDTO {
 		// TODO Auto-generated constructor stub
 	}
 	
-	
+	public UserEntityDTO(UserEntity user) {
+		this.id= user.getId();
+		this.username = user.getUsername();
+	}
 	
 
 	

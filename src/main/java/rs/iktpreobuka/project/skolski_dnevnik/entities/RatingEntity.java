@@ -1,9 +1,5 @@
 package rs.iktpreobuka.project.skolski_dnevnik.entities;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,14 +7,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import rs.iktpreobuka.project.skolski_dnevnik.entities.enums.Score;
+import rs.iktpreobuka.project.skolski_dnevnik.entities.enums.EHalfYear;
+import rs.iktpreobuka.project.skolski_dnevnik.entities.enums.EScore;
 
 @Entity
 @Table(name="Rating")
@@ -31,46 +25,26 @@ public class RatingEntity {
 	 @Version
 	 private Integer version;
 	 @Column(name="Score")
-	 private Score score;
-	 @Column(name="Final_Score")
-	 private Double finalscore;
-	 @Column(name="FrstHafScore")
-	 private Double frstHafScore;
-	 @Column(name="Second_Haf_Score")
-	 private Double secondHafScore;
-	 @Column(name="Date")
-	 private LocalDate date;
+	 private EScore score;
+	 @Column (name = "half_year")
+	 private EHalfYear half;
 	 
+	 @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	 @JoinColumn(name = "subject")
+	 private SubjectEntity subject;
 	 
-	 @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-		@JoinTable(name = "Student_Rating", joinColumns =
-		{ @JoinColumn(name = "Rating_id", nullable = false, updatable = false) },
-		inverseJoinColumns = { @JoinColumn(name = "Student_id", nullable = false,
-		updatable = false) })
-		protected List<RatingEntity> ratings = new ArrayList<>();
+	 @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	 @JoinColumn(name = "student")
+	 private StudentEntity student;
+		
+	 @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	 @JoinColumn(name = "teacher")
+	 private TeacherEntity teacher;
 	 
-	 @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-		@JoinTable(name = "Reating_Subject", joinColumns =
-		{ @JoinColumn(name = "Rating_id", nullable = false, updatable = false) },
-		inverseJoinColumns = { @JoinColumn(name = "Subject_id", nullable = false,
-		updatable = false) })
-		protected List<RatingEntity> ratingSubject = new ArrayList<>();
-	 
-	 @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-		@JoinTable(name = "Rating_Action", joinColumns =
-		{@JoinColumn(name = "Rating_id", nullable = false, updatable = false) },
-		inverseJoinColumns = { @JoinColumn(name = "Action_id",
-		nullable = false, updatable = false) })
-		protected List<RatingEntity> ratingAction = new ArrayList<>();
+	 @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	 @JoinColumn(name = "action")
+	 private ActionEntity action;
 	
-	 @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-		@JoinTable(name = "Teacher_Rating", joinColumns =
-		{@JoinColumn(name = "Rating_id", nullable = false, updatable = false) },
-		inverseJoinColumns = { @JoinColumn(name = "Teacher_id",
-		nullable = false, updatable = false) })
-		protected List<RatingEntity> ratingTeacher = new ArrayList<>();
-	
-	 
 	public Integer getId() {
 		return id;
 	}
@@ -83,46 +57,49 @@ public class RatingEntity {
 	public void setVersion(Integer version) {
 		this.version = version;
 	}
-	public Score getScore() {
+	public EScore getScore() {
 		return score;
 	}
-	public void setScore(Score score) {
+	public void setScore(EScore score) {
 		this.score = score;
 	}
-	public Double getFinalscore() {
-		return finalscore;
+	
+	public EHalfYear getHalf() {
+		return half;
 	}
-	public void setFinalscore(Double finalscore) {
-		this.finalscore = finalscore;
+	public void setHalf(EHalfYear half) {
+		this.half = half;
 	}
-	public Double getFrstHafScore() {
-		return frstHafScore;
+	public SubjectEntity getSubject() {
+		return subject;
 	}
-	public void setFrstHafScore(Double frstHafScore) {
-		this.frstHafScore = frstHafScore;
+	public void setSubject(SubjectEntity subject) {
+		this.subject = subject;
 	}
-	public Double getSecondHafScore() {
-		return secondHafScore;
+	public StudentEntity getStudent() {
+		return student;
 	}
-	public void setSecondHafScore(Double secondHafScore) {
-		this.secondHafScore = secondHafScore;
+	public void setStudent(StudentEntity student) {
+		this.student = student;
 	}
-	public LocalDate getDate() {
-		return date;
+	public TeacherEntity getTeacher() {
+		return teacher;
 	}
-	public void setDate(LocalDate date) {
-		this.date = date;
+	public void setTeacher(TeacherEntity teacher) {
+		this.teacher = teacher;
 	}
-	public RatingEntity(Integer id, Integer version, Score score, Double finalscore, Double frstHafScore,
-			Double secondHafScore, LocalDate date) {
+	public ActionEntity getAction() {
+		return action;
+	}
+	public void setAction(ActionEntity action) {
+		this.action = action;
+	}
+	
+	public RatingEntity(Integer id, Integer version, EScore score) {
 		super();
 		this.id = id;
 		this.version = version;
 		this.score = score;
-		this.finalscore = finalscore;
-		this.frstHafScore = frstHafScore;
-		this.secondHafScore = secondHafScore;
-		this.date = date;
 	}
 	public RatingEntity() {
 		super();

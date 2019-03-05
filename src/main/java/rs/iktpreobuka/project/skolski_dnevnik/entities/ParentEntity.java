@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -29,6 +28,22 @@ public class ParentEntity {
 	private Integer version;
 	@Column(name="number_of_students")
 	private Integer numbOfStu;
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "parson")
+	private ParsonEntity parson;
+	
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	private List<StudentEntity> student= new ArrayList<>(); 
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "role")
+	private RoleEntety role;
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "user")
+	private UserEntity user;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -47,28 +62,30 @@ public class ParentEntity {
 	public void setNumbOfStu(Integer numbOfStu) {
 		this.numbOfStu = numbOfStu;
 	}
-	
-//	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-//	@JoinColumn(name = "person")
-//	private PersonEntity person;
-	
-	@OneToMany(mappedBy = "parent", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	private List<StudentEntity> student= new ArrayList<>(); 
-	
-//	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-//	@JoinColumn(name = "role")
-//	private RoleEntity role;
-	
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "user")
-	private UserEntity user;
-	
 
-	public ParentEntity(Integer id, Integer version, Integer numbOfStu) {
-	super();
-	this.id = id;
-	this.version = version;
-	this.numbOfStu = numbOfStu;
+	public ParsonEntity getParson() {
+		return parson;
+	}
+	public void setParson(ParsonEntity parson) {
+		this.parson = parson;
+	}
+	public List<StudentEntity> getStudent() {
+		return student;
+	}
+	public void setStudent(List<StudentEntity> student) {
+		this.student = student;
+	}
+	public RoleEntety getRole() {
+		return role;
+	}
+	public void setRole(RoleEntety role) {
+		this.role = role;
+	}
+	public UserEntity getUser() {
+		return user;
+	}
+	public void setUser(UserEntity user) {
+		this.user = user;
 	}
 	public ParentEntity() {
 		super();
